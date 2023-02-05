@@ -1,0 +1,110 @@
+﻿@model VMS.Models.user
+
+@{
+    ViewBag.Title = "SignUp";
+}
+@{
+    if (TempData["signup"] != null)
+    {
+
+
+        <script>
+                                Swal.fire({
+                                    position: 'center-center',
+                                    icon: 'error',
+                                    title:'@TempData["s_msg"].ToString()',
+                                    showConfirmButton: false,
+                                    timer: 5500,
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    },
+                                    buttonsStyling: false
+                                });
+        </script>
+
+    }
+}
+<h2>SignUp</h2>
+
+
+<div class="col-sm-12">
+
+
+
+    <form method="post" action="@Url.Action("SignUp")" enctype="multipart/form-data">
+
+
+
+        <div class="col-md-11 mb-3">
+            <label class="form-label">First name</label>
+            <input class="form-control" id="validationDefault01" type="text" name="First_Name" placeholder="">
+            <p>@Html.ValidationMessageFor(model => model.First_Name)</p>
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Last name</label>
+            <input class="form-control" type="text" name="Last_Name">
+            <p>@Html.ValidationMessageFor(model => model.Last_Name)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="text" name="email">
+            <p>@Html.ValidationMessageFor(model => model.email)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Password</label>
+            <input class="form-control" type="text" name="password">
+            <p>@Html.ValidationMessageFor(model => model.password)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input class="form-control" type="text" name="confirm_password">
+            <p>@Html.ValidationMessageFor(model => model.confirm_password)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Phone no</label>
+            <input class="form-control" type="tel" name="phone">
+            <p>@Html.ValidationMessageFor(model => model.phone)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">CNIC No</label>
+            <input class="form-control" type="text" name="CNIC">
+            <p>@Html.ValidationMessageFor(model => model.CNIC)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Gender</label>
+            <select class="custom-select form-select" name="gender">
+                <option selected="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Other</option>
+            </select>
+            <p>@Html.ValidationMessageFor(model => model.gender)</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">Profile Picture</label>
+            <input class="form-control" type="file" name="profile_img">
+            <p>@Html.ValidationMessage("profile_img")</p>
+
+        </div>
+        <div class="col-md-11 mb-3">
+            <label class="form-label">CNIC Picture</label>
+            <input class="form-control" type="file" name="cnic_img">
+            <p>@Html.ValidationMessage("cnic_img")</p>
+
+        </div>
+
+        <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Signup</button>
+
+
+    </form>
+
+
+
+</div>

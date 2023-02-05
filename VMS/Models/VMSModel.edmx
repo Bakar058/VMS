@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admins">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First_Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Last_Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CNIC" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Designation" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="gender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="profile_pic" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="cnic_pic" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="otp" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdminUserMeetingRelation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="meeting_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="admin_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Meeting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="admin_id" Type="int" Nullable="false" />
+          <Property Name="meeting_date" Type="datetime" Nullable="false" />
+          <Property Name="time_start" Type="time" Precision="7" Nullable="false" />
+          <Property Name="time_end" Type="time" Precision="7" Nullable="false" />
+          <Property Name="duration" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="approval" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First_Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Last_Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CNIC" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="gender" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="profile_pic" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="cnic_pic" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="otp" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AdminUserMeetingRelation_admins">
+          <End Role="admins" Type="Self.admins" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admins">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="admin_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUserMeetingRelation_Meeting">
+          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="meeting_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUserMeetingRelation_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VMSModelStoreContainer">
+          <EntitySet Name="admins" EntityType="Self.admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdminUserMeetingRelation" EntityType="Self.AdminUserMeetingRelation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Meeting" EntityType="Self.Meeting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AdminUserMeetingRelation_admins" Association="Self.FK_AdminUserMeetingRelation_admins">
+            <End Role="admins" EntitySet="admins" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUserMeetingRelation_Meeting" Association="Self.FK_AdminUserMeetingRelation_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUserMeetingRelation_users" Association="Self.FK_AdminUserMeetingRelation_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CNIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="profile_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cnic_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_admins" FromRole="admins" ToRole="AdminUserMeetingRelation" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="otp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AdminUserMeetingRelation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="meeting_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="admin_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="admin" Relationship="Self.FK_AdminUserMeetingRelation_admins" FromRole="AdminUserMeetingRelation" ToRole="admins" />
+          <NavigationProperty Name="Meeting" Relationship="Self.FK_AdminUserMeetingRelation_Meeting" FromRole="AdminUserMeetingRelation" ToRole="Meeting" />
+          <NavigationProperty Name="user" Relationship="Self.FK_AdminUserMeetingRelation_users" FromRole="AdminUserMeetingRelation" ToRole="users" />
+        </EntityType>
+        <EntityType Name="Meeting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="admin_id" Type="Int32" Nullable="false" />
+          <Property Name="meeting_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="time_start" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="time_end" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="approval" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_Meeting" FromRole="Meeting" ToRole="AdminUserMeetingRelation" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CNIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="profile_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cnic_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_users" FromRole="users" ToRole="AdminUserMeetingRelation" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="otp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_AdminUserMeetingRelation_admins">
+          <End Role="admins" Type="Self.admin" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admins">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="admin_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUserMeetingRelation_Meeting">
+          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="meeting_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUserMeetingRelation_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdminUserMeetingRelation">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admins" EntityType="Self.admin" />
+          <EntitySet Name="AdminUserMeetingRelations" EntityType="Self.AdminUserMeetingRelation" />
+          <EntitySet Name="Meetings" EntityType="Self.Meeting" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_AdminUserMeetingRelation_admins" Association="Self.FK_AdminUserMeetingRelation_admins">
+            <End Role="admins" EntitySet="admins" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUserMeetingRelation_Meeting" Association="Self.FK_AdminUserMeetingRelation_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUserMeetingRelation_users" Association="Self.FK_AdminUserMeetingRelation_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VMSModelStoreContainer" CdmEntityContainer="VMSEntities">
+          <EntitySetMapping Name="admins">
+            <EntityTypeMapping TypeName="VMSModel.admin">
+              <MappingFragment StoreEntitySet="admins">
+                <ScalarProperty Name="otp" ColumnName="otp" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="profile_pic" ColumnName="profile_pic" />
+                <ScalarProperty Name="cnic_pic" ColumnName="cnic_pic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminUserMeetingRelations">
+            <EntityTypeMapping TypeName="VMSModel.AdminUserMeetingRelation">
+              <MappingFragment StoreEntitySet="AdminUserMeetingRelation">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="meeting_id" ColumnName="meeting_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Meetings">
+            <EntityTypeMapping TypeName="VMSModel.Meeting">
+              <MappingFragment StoreEntitySet="Meeting">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+                <ScalarProperty Name="meeting_date" ColumnName="meeting_date" />
+                <ScalarProperty Name="time_start" ColumnName="time_start" />
+                <ScalarProperty Name="time_end" ColumnName="time_end" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="approval" ColumnName="approval" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="VMSModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="otp" ColumnName="otp" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="profile_pic" ColumnName="profile_pic" />
+                <ScalarProperty Name="cnic_pic" ColumnName="cnic_pic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Login</h2>
+
+
+
+@{
+    if (TempData["signup"] != null)
+    {
+
+
+        <script>
+                                Swal.fire({
+                                    position: 'center-center',
+                                    icon: 'success',
+                                    title:'@TempData["s_msg"].ToString()',
+                                    showConfirmButton: false,
+                                    timer: 5500,
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    },
+                                    buttonsStyling: false
+                                });
+        </script>
+
+    }
+}
+@{
+    if (TempData["l_msg"] != null)
+    {
+
+
+        <script>
+            Swal.fire({
+                position: 'center-center',
+                icon: 'fail',
+                title: 'Login Failed',
+                showConfirmButton: false,
+                timer: 5500,
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        </script>
+
+    }
+}
+@{
+    if (TempData["l_msg"] != null)
+    {
+        if (TempData["l_msg"].ToString() == "notverified")
+        {
+
+
+
+
+            <div class="alert alert-primary" role="alert">
+                Please Check Your Email. An OTP has been Sent to your email!!!!!!.<a href="@Url.Action("VarifyEmail", new { email=ViewBag.email })" class="alert-link">Click To Varify Your Email</a>
+            </div>
+        }
+        else if (TempData["l_msg"].ToString() == "fail")
+        {
+
+            <script>
+                Swal.fire({
+                    position: 'center-center',
+                    icon: 'error',
+                    title: 'Login Failed',
+                    showConfirmButton: false,
+                    timer: 5500,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+            </script>
+        }
+    }
+}
+
+@{
+    if (Session["name"] != null)
+    {
+
+        <p> @Session["name"]</p>
+    }
+}
+
+<form method="post" action="@Url.Action("Login")">
+
+
+
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" id="validationDefault01" type="text" name="email" placeholder="">
+        <p>@Html.ValidationMessage("email")</p>
+    </div>
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Password</label>
+        <input class="form-control" type="text" name="password">
+        <p>@Html.ValidationMessage("password")</p>
+
+
+    </div>
+    <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Signup</button>
+
+</form>

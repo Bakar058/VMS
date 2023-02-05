@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "UserProfile";
+}
+
+<h2>UserProfile</h2>
+
+@{
+    if (TempData["l_msg"] != null)
+    {
+
+
+        <script>
+                                Swal.fire({
+                                    position: 'center-center',
+                                    icon: 'success',
+                                    title:'Login Successfull',
+                                    showConfirmButton: false,
+                                    timer: 5500,
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    },
+                                    buttonsStyling: false
+                                });
+        </script>
+
+    }
+}
+
+<h1>Welcome @Session["username"]</h1>

@@ -1,0 +1,160 @@
+﻿@model VMS.Models.Meeting
+@{
+    ViewBag.Title = "AddMeeting";
+}
+
+<h2>AddMeeting</h2>
+
+@{
+    if (Model != null)
+    {
+        <p> user : @Model.user_id</p>
+        <p> user : @Model.admin_id</p>
+        <p> user : @Model.time_end</p>
+        <p> user : @Model.time_start</p>
+        <p> user : @Model.duration</p>
+        <p> user : @Model.meeting_date</p>
+
+
+
+
+    }
+}
+
+<form method="post" id="form" action="@Url.Action("AddMeeting")">
+
+    <div class="col-md-11 mb-3">
+        
+        <label class="form-label">Admin</label>
+        <div class="col-sm-7">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr><td><input type="text"  name="search" /> <input type="button" onclick="a()" /></td></tr>
+                    <tr><td>Name</td><td>Designation</td><td>Email</td><td></td></tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        foreach (var item in (List<VMS.Models.admin>)ViewData["admins"])
+                        {
+                            <tr><td>@item.First_Name + @item.Last_Name</td> <td>@item.Designation</td><td>@item.email</td><td><input type="radio" name="admin_id" value="@item.id" /></td></tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Date</label>
+        <input class="form-control" id="validationDefault01" type="date" name="meeting_date" placeholder="">
+        <p>@Html.ValidationMessage("email")</p>
+    </div>
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Meeting Start Time</label>
+        <input class="form-control" type="time" name="time_start">
+        <p>@Html.ValidationMessage("password")</p>
+
+
+    </div>
+   
+
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Meeting End Time</label>
+        <input class="form-control" type="number" name="user_id">
+        <p>@Html.ValidationMessage("password")</p>
+
+
+    </div>
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Select Admin</label>
+        @Html.DropDownList("admin_id", new SelectList(ViewBag.admins, "id", "First_name"))
+
+        <p>@Html.ValidationMessage("password")</p>
+
+
+    </div>
+    <div class="col-md-11 mb-3">
+        @{
+            var a = (VMS.Models.user)Session["user"];
+        }
+        <input type="number" class="form-control" value="@a.Id" name="user_id" />
+
+
+
+    </div>
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Meeting Duration</label>
+        <input class="form-control" type="text" name="duration">
+        <p>@Html.ValidationMessage("password")</p>
+
+
+    </div>
+    <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Signup</button>
+
+</form>
+<script>
+    function a() {
+        alert("a")
+    }
+
+    $(document).ready(function () {
+
+
+       
+/*
+
+        const form = document.querySelector("#form");
+        const fields = form.querySelectorAll("input");
+
+        for (let i = 0; i < fields.length - 1; i++) {
+            if (fields[i].type !== "radio") {
+                fields[i].addEventListener("input", function () {
+                    let nextEnabled = true;
+                    for (let j = 0; j <= i; j++) {
+                        if (fields[j].type !== "radio" && fields[j].value.trim() === "") {
+                            nextEnabled = false;
+                            break;
+                        }
+                    }
+                    fields[i + 1].disabled = !nextEnabled;
+                });
+            }
+        }
+
+        fields[0].disabled = false;
+        for (let i = 1; i < fields.length; i++) {
+            fields[i].disabled = true;
+        }
+*/
+
+
+        function calculateTime() {
+            //get values
+            var meeting_date = $("input[name='meeting_date']").val();
+            console.log(meeting_date)
+            var valuestart = $("input[name='time_start']").val();
+            var valuestop = $("input[name='time_end']").val();
+            console.log(valuestart + "   " + valuestop);
+            //create date format
+            const c_date = new Date(Date.now());
+            console.log(c_date.toLocaleDateString())
+            var timeStart = new Date(meeting_date + " " + valuestart)
+            var timeEnd = new Date(meeting_date + " " + valuestop)
+            console.log(timeStart.getHours() + "  " + timeEnd.getHours());
+            var differenceh = timeEnd.getHours() - timeStart.getHours();
+
+            var differencem = timeEnd.getMinutes() - timeStart.getMinutes();
+            var meeting_date = $("input[name='duration']").val("0" + differenceh + " Hours " + differencem + "  Minutes");
+
+            //console.log(difference)
+            var diff_result = new Date(differenceh + differencem);
+            console.log(diff_result)
+            var hourDiff = diff_result.getHours();
+            console.log(hourDiff)
+            //  $("p").html("<b>Total Hours:</b> " + hourDiff)
+        }
+        $("input[name = 'time_end']").change(calculateTime);
+        //calculateTime();
+    });
+</script>

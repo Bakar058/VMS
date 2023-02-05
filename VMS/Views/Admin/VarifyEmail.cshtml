@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "VarifyEmail";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>VarifyEmail</h2>
+
+
+@{
+    if (TempData["signup"] != null)
+    {
+
+
+        <script>
+                                Swal.fire({
+                                    position: 'center-center',
+                                    icon: 'success',
+                                    title:'@TempData["s_msg"].ToString()',
+                                    showConfirmButton: false,
+                                    timer: 5500,
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    },
+                                    buttonsStyling: false
+                                });
+        </script>
+
+    }
+}
+
+
+<p>Please Check Your Email. An OTP has been Sent to your email!!!!!!</p>
+<form method="post" action="@Url.Action("VarifyEmail")">
+
+    <div class="col-md-11 mb-3">
+        <label class="form-label">Enter OTP</label>
+        <input class="form-control" id="validationDefault01" type="text" name="otp" placeholder="">
+        <p>@Html.ValidationMessage("otp")</p>
+        <input class="form-control" id="validationDefault01" type="text" name="email" value="@TempData["e"]" placeholder="">
+        <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Varify</button>
+
+    </div>
+</form>
+@{ 
+    TempData.Keep("e");
+
+}
