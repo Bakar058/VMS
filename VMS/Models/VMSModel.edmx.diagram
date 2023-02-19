@@ -6,13 +6,13 @@
     <edmx:Diagrams>
       <Diagram DiagramId="eba12a6b2bc04b268f6481f92347893f" Name="Diagram1">
         <EntityTypeShape EntityType="VMSModel.admin" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="VMSModel.AdminUserMeetingRelation" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="VMSModel.Meeting" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="VMSModel.user" Width="1.5" PointX="0.75" PointY="9.875" IsExpanded="true" />
-        <AssociationConnector Association="VMSModel.FK_AdminUserMeetingRelation_admins" ManuallyRouted="false" />
-        <AssociationConnector Association="VMSModel.FK_AdminUserMeetingRelation_Meeting" ManuallyRouted="false" />
-        <AssociationConnector Association="VMSModel.FK_AdminUserMeetingRelation_users" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="VMSModel.user" Width="1.5" PointX="4" PointY="10.125" IsExpanded="true" />
+        <AssociationConnector Association="VMSModel.FK_Meeting_admins" />
+        <AssociationConnector Association="VMSModel.FK_Meeting_users" />
+        <EntityTypeShape EntityType="VMSModel.visit" Width="1.5" PointX="8.125" PointY="9.875" />
+        <AssociationConnector Association="VMSModel.FK_visits_users" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

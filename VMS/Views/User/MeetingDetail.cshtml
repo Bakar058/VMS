@@ -1,0 +1,191 @@
+﻿@model VMS.Models.Meetindetails
+@{
+    ViewBag.Title = "MeetingDetail";
+}
+
+
+
+
+
+
+
+<section class="mt-85">
+    <div class="container">
+
+
+        <h2>MeetingDetail</h2>
+
+        <div class="row  p-0" >
+            <div class="col-xl-4 xl-cs-65 box-col-12">
+                <div class="card ">
+                    <input type="time" id="time" value="@Model.meeting.time_end" hidden />
+                    <input type="number" id="status" value="@Model.meeting.status" hidden />
+
+                    <div style="height:400px" class="card-body text-center my-auto">
+                        @{
+                            if (Model.meeting.approval == 0)
+                            {
+                                <p>
+                                    QR Code Will be Available After The Approval.....
+                                </p>
+                            }
+                            else if (Model.meeting.approval == 1)
+                            {
+                                if (Model.meeting.status >= 0)
+                                {
+                                    <div><img src="@Url.Content(Model.meeting.qrcode)" alt=""></div>
+
+                                }
+                                else if (Model.meeting.status == -1)
+                                {
+                                    <p>Meeting Ended</p>
+                                }
+
+                            }
+                            else
+                            {
+                                <p>Meeting Declined</p>
+                            }
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-10">
+                <div class="card">
+                    <div class="card-body mb-30">
+                        <!-- side-bar colleps block stat-->
+
+
+                        <ul>
+                            <li>@Model.meeting.id</li>
+                            <li>@Model.user.First_Name </li>
+                            <li>@Model.user.email</li>
+                            <li>@Model.admin.First_Name  </li>
+                            <li>@Model.admin.email</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-body">
+
+                        <ul class="pro-services">
+                            <li>
+                                <div class="media">
+
+                                    <div class="media-body">
+                                        <h5>Meeting Date</h5>
+                                        <p>@Model.meeting.meeting_date.ToLongDateString()</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media">
+                                    <i data-feather="clock"></i>
+
+                                    <div class="media-body">
+                                        <h5>Meeting Start Time</h5>
+                                        <p>@Model.meeting.time_start</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media">
+                                    <i data-feather="clock"></i>
+                                    <div class="media-body">
+                                        <h5>Meeting End Time                                 </h5>
+                                        <p>@Model.meeting.time_end</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media">
+
+                                    <div class="media-body">
+                                        <h5>Meeting Duration </h5>
+                                        <p>@Model.meeting.duration</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="media">
+
+                                    <div class="media-body">
+                                        <h5>Meeting Status</h5>
+                                        @{
+                                            if (Model.meeting.approval == 0)
+                                            {
+                                                <p>
+                                                    Not Approved
+                                                </p>
+                                            }
+                                            else if (Model.meeting.approval == 1)
+                                            {
+                                                <p> Approved</p>
+                                            }
+                                            else
+                                            {
+                                                <p>Declined</p>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- silde-bar colleps block end here-->
+            </div>
+            <div class="">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h3>Meeting Purpose.</h3>
+
+
+                        <hr>
+                        <p>@Model.meeting.Purpose</p>
+                        <hr>
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<script>
+    var storedTime = document.getElementById("time").value;
+    var st = parseInt(document.getElementById("status").value)
+    function hideTagByTime() {
+        var currentDate = new Date();
+
+        var currentTime = currentDate.getHours().toString().padStart(2, '0') + ':' + currentDate.getMinutes().toString().padStart(2, '0') + ':' + currentDate.getSeconds().toString().padStart(2, '0');
+        console.log(storedTime)
+        console.log(currentTime)
+        var storedTimeValue = new Date("1970-01-01T" + storedTime + "Z");
+        var currentTimeValue = new Date("1970-01-01T" + currentTime + "Z");
+        console.log(storedTimeValue)
+
+        console.log(currentTimeValue)
+
+        if (currentTimeValue >= storedTimeValue) {
+            alert("a")
+            window.location.href = "@Url.Action("ChangeStatus","User",new {id=Model.meeting.id, ch=1})";
+        }
+    }
+    if (st!==-1)
+    hideTagByTime();
+
+</script>

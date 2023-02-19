@@ -12,6 +12,7 @@ namespace VMS
     {
         protected void Application_Start()
         {
+            //Session.Timeout = 400;
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

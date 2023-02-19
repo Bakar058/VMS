@@ -26,8 +26,8 @@ namespace VMS.Models
         }
     
         public virtual DbSet<admin> admins { get; set; }
-        public virtual DbSet<AdminUserMeetingRelation> AdminUserMeetingRelations { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<visit> visits { get; set; }
     }
 }

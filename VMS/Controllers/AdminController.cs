@@ -204,7 +204,7 @@ namespace VMS.Controllers
                     {
 
                         Session["Adminusername"] = credentials.First_Name + "  " + credentials.Last_Name;
-                        //Session["user"] = credentials;
+                        Session["admin"] = credentials;
                         Session["Adminimg"] = credentials.profile_pic;
                         TempData["l_msg"] = "success";
                         HttpCookie cookie = new HttpCookie("AdminCookie", "LoggedIn");
@@ -248,6 +248,58 @@ namespace VMS.Controllers
 
         public ActionResult AdminProfile()
         {
+            return View();
+        }
+        public ActionResult GetMeetings(int id)
+        {
+            var meetings = db.Meetings.Where(model => model.admin_id == id);
+            return View(meetings);
+        }
+        public ActionResult approve(int id, int ch)
+        {
+            var meeting = db.Meetings.Single(model => model.id == id);
+            if (ch == 0)
+            {
+                meeting.approval = -1;
+                db.Entry(meeting).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["meeting"] = "decline";
+
+            }
+            else if (ch == 1)
+            {
+                meeting.approval = 1;
+               
+                TempData["meeting"] = "approved";
+               
+
+                db.Entry(meeting).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("GetMeetings", "Admin", new {id=meeting.admin_id});
+        }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(string id, string old_password, string password)
+        {
+
+            int u_id = Convert.ToInt32(id);
+            var user = db.users.Where(model => model.Id == u_id && model.password == old_password).FirstOrDefault();
+            if (user != null)
+            {
+                user.password = password;
+                user.confirm_password = password;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["p_change"] = "success";
+            }
+            else
+            {
+                TempData["p_change"] = "fail";
+            }
             return View();
         }
         public ActionResult AboutUs()

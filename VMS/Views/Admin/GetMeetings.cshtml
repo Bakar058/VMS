@@ -1,0 +1,131 @@
+﻿@model IEnumerable<VMS.Models.Meeting>
+@{
+    ViewBag.Title = "GetMeetings";
+}
+
+
+@{
+    if (TempData["meeting"] != null)
+    {
+
+        if (TempData["meeting"].ToString() == "approved")
+        {
+            <script>
+                Swal.fire({
+                    position: 'center-center',
+                    icon: 'success',
+                    title: 'Meeting Approved',
+                    showConfirmButton: false,
+                    timer: 5500,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+            </script>
+
+        }
+        if (TempData["meeting"].ToString() == "decline")
+        {
+            <script>
+                Swal.fire({
+                    position: 'center-center',
+                    icon: 'error',
+                    title: 'Meeting Declined',
+                    showConfirmButton: false,
+                    timer: 5500,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+            </script>
+
+        }
+
+    }
+}
+
+
+<section class="pt-70">
+    <div class="container">
+
+
+        <h2>GetMeetings</h2>
+
+
+        <div class="col-sm-12">
+            <div class="card">
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class=" table ">
+                            <thead>
+                                <tr>
+                                    <th>Meeting Id</th>
+                                    <th>User ID</th>
+                                    <th>Admin ID</th>
+                                    <th>Date</th>
+                                    <th>Meeting Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var meeting in Model)
+                                    {
+                                        <tr class="mt-3">
+                                            <td>
+                                                @meeting.id
+                                            </td>
+                                            <td>
+                                                @meeting.user_id
+                                            </td>
+                                            <td>
+                                                @meeting.admin_id
+
+                                            </td>
+                                            <td>
+                                                @meeting.meeting_date.ToLongDateString()
+                                            </td>
+                                            @{
+                                                if (meeting.approval == 0)
+                                                {
+                                                    <td>
+                                                        <button class="btn" onclick="location.href='@Url.Action("approve", "Admin",new {id=meeting.id,ch=0 } )'"> <i style="font-size:20px;color:red" class="fa-regular fa-circle-xmark"></i></button> <button class="btn" onclick="location.href='@Url.Action("approve", "Admin",new {id=meeting.id,ch=1 } )'"> <i style="font-size:20px;color:green" class="fa-regular fa-circle-check"></i></button>
+                                                    </td>
+                                                }
+                                                else if (meeting.approval == 1)
+                                                {
+                                                    <td> Meeting is Approved</td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td>Meeting Declined</td>
+                                                }
+                                            }
+                                            <td>
+                                                @* <a href="@Url.Action("MeetingDetail","User",new {id= meeting.id})">Details</a>*@
+                                            </td>
+
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User Name</th>
+                                    <th>Role</th>
+                                    <th>Active</th>
+                                    <th>Account Status</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -29,19 +29,23 @@
     }
 }
 
+<section class="mt-80">
+    <div class="container">
+        <p>Please Check Your Email. An OTP has been Sent to your email!!!!!!</p>
+        <form method="post" action="@Url.Action("VarifyEmail")">
 
-<p>Please Check Your Email. An OTP has been Sent to your email!!!!!!</p>
-<form method="post" action="@Url.Action("VarifyEmail")">
+            <div class="col-md-11 mb-3">
+                <label class="form-label">Enter OTP</label>
+                <input class="form-control" type="text" name="otp" placeholder="">
+                <p>@Html.ValidationMessage("otp")</p>
+                <input class="form-control" type="text" name="email" value="@TempData["e"]" placeholder="">
+                <button class="btn btn-outline-primary" type="submit">Varify</button>
 
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Enter OTP</label>
-        <input class="form-control" id="validationDefault01" type="text" name="otp" placeholder="">
-        <p>@Html.ValidationMessage("otp")</p>
-        <input class="form-control" id="validationDefault01" type="text" name="email" value="@TempData["e"]" placeholder="">
-        <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Varify</button>
-
+            </div>
+        </form>
     </div>
-</form>
+</section>
+
 @{ 
     TempData.Keep("e");
 

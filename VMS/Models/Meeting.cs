@@ -14,12 +14,6 @@ namespace VMS.Models
     
     public partial class Meeting
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Meeting()
-        {
-            this.AdminUserMeetingRelations = new HashSet<AdminUserMeetingRelation>();
-        }
-    
         public int id { get; set; }
         public int user_id { get; set; }
         public int admin_id { get; set; }
@@ -29,8 +23,10 @@ namespace VMS.Models
         public string duration { get; set; }
         public int approval { get; set; }
         public int status { get; set; }
+        public string qrcode { get; set; }
+        public string Purpose { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdminUserMeetingRelation> AdminUserMeetingRelations { get; set; }
+        public virtual admin admin { get; set; }
+        public virtual user user { get; set; }
     }
 }

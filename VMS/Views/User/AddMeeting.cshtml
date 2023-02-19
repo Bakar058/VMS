@@ -3,158 +3,360 @@
     ViewBag.Title = "AddMeeting";
 }
 
-<h2>AddMeeting</h2>
 
-@{
-    if (Model != null)
-    {
-        <p> user : @Model.user_id</p>
-        <p> user : @Model.admin_id</p>
-        <p> user : @Model.time_end</p>
-        <p> user : @Model.time_start</p>
-        <p> user : @Model.duration</p>
-        <p> user : @Model.meeting_date</p>
+<section class="pt-70 ">
+    <div class="container ">
 
 
+        <div id="login-part" class="pt-85 pb-80">
+            <div class="container">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-md-8">
+                        <div class="login-form text-center">
 
 
-    }
-}
+                            <form method="post" id="form" action="@Url.Action("AddMeeting")">
+                                <div class="col-md-7 mb-3">
+                                    @{
+                                        var a = (VMS.Models.user)Session["user"];
+                                    }
+                                    <input type="number" class="form-control" value="@a.Id" name="user_id" hidden />
 
-<form method="post" id="form" action="@Url.Action("AddMeeting")">
 
-    <div class="col-md-11 mb-3">
-        
-        <label class="form-label">Admin</label>
-        <div class="col-sm-7">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr><td><input type="text"  name="search" /> <input type="button" onclick="a()" /></td></tr>
-                    <tr><td>Name</td><td>Designation</td><td>Email</td><td></td></tr>
-                </thead>
-                <tbody>
-                    @{
 
-                        foreach (var item in (List<VMS.Models.admin>)ViewData["admins"])
-                        {
-                            <tr><td>@item.First_Name + @item.Last_Name</td> <td>@item.Designation</td><td>@item.email</td><td><input type="radio" name="admin_id" value="@item.id" /></td></tr>
-                        }
-                    }
-                </tbody>
-            </table>
+                                </div>
+                                <div class="col-md-11 mb-6">
+                                    
+                                    <label>Select Member you want to meet</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="search" id="searchInput" class="form-control col-md-10" placeholder="Enter Name or Designation to search" />
+
+                                        <div class="table-responsive-sm mt-10">
+                                            <table class="table table-hover table-bordered" id="myTable">
+                                                <thead>
+
+                                                    <tr><td>Name</td><td>Designation</td><td>Email</td><td></td></tr>
+                                                </thead>
+                                                <tbody id="t_body">
+                                                    @{
+
+                                                        foreach (var item in (List<VMS.Models.admin>)ViewData["admins"])
+                                                        {
+                                                            <tr><td>@item.First_Name  @item.Last_Name</td> <td>@item.Designation</td><td>@item.email</td><td><input type="radio" name="admin_id" value="@item.id" /></td></tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label ">Date</label>
+                                    <input class="form-control dis" id="validationDefault01" type="date" name="meeting_date" placeholder="">
+                                    <p id="meeting_msg">@Html.ValidationMessage("email")</p>
+                                </div>
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Meeting Start Time</label>
+                                    <input class="form-control dis" type="time" name="time_start" disabled>
+                                    <p id="ts_msg">@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Meeting End Time</label>
+                                    <input class="form-control dis" type="time" name="time_end" disabled>
+                                    <p id="te_msg">@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Purpose</label>
+                                    <textarea class="form-control dis" placeholder="Enter Your Purpose Of Meeting" name="purpose" disabled></textarea>
+
+                                    <p>@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Meeting Duration</label>
+                                    <input class="form-control" type="text" name="duration" readonly>
+                                    <p>@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+                                <div class="col-md-11 mb-3 d-flex justify-content-center">
+                                    <input type="submit" class="btn btn-outline-primary  " id="submit" value="Submit" disabled>
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Date</label>
-        <input class="form-control" id="validationDefault01" type="date" name="meeting_date" placeholder="">
-        <p>@Html.ValidationMessage("email")</p>
-    </div>
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Meeting Start Time</label>
-        <input class="form-control" type="time" name="time_start">
-        <p>@Html.ValidationMessage("password")</p>
-
-
-    </div>
-   
-
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Meeting End Time</label>
-        <input class="form-control" type="number" name="user_id">
-        <p>@Html.ValidationMessage("password")</p>
-
-
-    </div>
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Select Admin</label>
-        @Html.DropDownList("admin_id", new SelectList(ViewBag.admins, "id", "First_name"))
-
-        <p>@Html.ValidationMessage("password")</p>
-
-
-    </div>
-    <div class="col-md-11 mb-3">
-        @{
-            var a = (VMS.Models.user)Session["user"];
-        }
-        <input type="number" class="form-control" value="@a.Id" name="user_id" />
+</section>
 
 
 
-    </div>
-    <div class="col-md-11 mb-3">
-        <label class="form-label">Meeting Duration</label>
-        <input class="form-control" type="text" name="duration">
-        <p>@Html.ValidationMessage("password")</p>
 
-
-    </div>
-    <button class="btn btn-pill btn-air-primary btn-primary-gradien" type="submit">Signup</button>
-
-</form>
 <script>
-    function a() {
-        alert("a")
+    $(function () {
+        $('#searchInput').on('input', function () {
+            $("#myTable tbody tr").remove();
+            var input = $(this).val();
+
+            $.ajax({
+                url: '@Url.Action("Search","User")',
+                data: { search: input },
+                success: function (data)
+                {
+                    var items = '';
+                    $.each(data, function (i, item)
+                    {
+                        console.log(item.First_Name)
+                        var rows = "<tr>"
+                            + "<td>" + item.First_Name +" "+ item.Last_Name+ "</td>"
+                            + "<td>" + item.Designation + "</td>"
+                            + "<td>" + item.email + "</td>"
+                            + "<td>" + `<input type='radio' name='admin_id' value= '${item.id}' /> `+ "</td>"
+                            + "</tr>";
+                        $('#myTable tbody').append(rows);
+                    });
+
+                },
+                error: function (ex) {
+                    console.log(ex)
+                }
+            });
+        });
+    });
+
+    let submit= true;
+
+    function check() {
+        let inp = document.querySelectorAll(".dis");
+       // console.log(inp)
+        for (let i = 0; i < inp.length; i++) {
+            if (inp[i].value == "") {
+                submit = false;
+                break;
+            }
+            else {
+                submit = true;
+            }
+        }
+
+        if (submit) {
+            $("#submit").removeAttr("disabled");
+        }
     }
 
     $(document).ready(function () {
 
-
-       
-/*
-
-        const form = document.querySelector("#form");
-        const fields = form.querySelectorAll("input");
-
-        for (let i = 0; i < fields.length - 1; i++) {
-            if (fields[i].type !== "radio") {
-                fields[i].addEventListener("input", function () {
-                    let nextEnabled = true;
-                    for (let j = 0; j <= i; j++) {
-                        if (fields[j].type !== "radio" && fields[j].value.trim() === "") {
-                            nextEnabled = false;
-                            break;
-                        }
-                    }
-                    fields[i + 1].disabled = !nextEnabled;
-                });
+        $(".dis").on("change", function () {
+            var next = $(this).parent().next().children(".dis");
+          //  console.log(next);
+            if ($(this).val() == "") {
+                $(next).attr("disabled", "disabled");
             }
-        }
+            else {
+                $(next).removeAttr("disabled");
+            }
+            check()
 
-        fields[0].disabled = false;
-        for (let i = 1; i < fields.length; i++) {
-            fields[i].disabled = true;
-        }
-*/
+        })
 
 
-        function calculateTime() {
-            //get values
-            var meeting_date = $("input[name='meeting_date']").val();
-            console.log(meeting_date)
-            var valuestart = $("input[name='time_start']").val();
-            var valuestop = $("input[name='time_end']").val();
-            console.log(valuestart + "   " + valuestop);
-            //create date format
-            const c_date = new Date(Date.now());
-            console.log(c_date.toLocaleDateString())
-            var timeStart = new Date(meeting_date + " " + valuestart)
-            var timeEnd = new Date(meeting_date + " " + valuestop)
-            console.log(timeStart.getHours() + "  " + timeEnd.getHours());
-            var differenceh = timeEnd.getHours() - timeStart.getHours();
 
-            var differencem = timeEnd.getMinutes() - timeStart.getMinutes();
-            var meeting_date = $("input[name='duration']").val("0" + differenceh + " Hours " + differencem + "  Minutes");
 
-            //console.log(difference)
-            var diff_result = new Date(differenceh + differencem);
-            console.log(diff_result)
-            var hourDiff = diff_result.getHours();
-            console.log(hourDiff)
-            //  $("p").html("<b>Total Hours:</b> " + hourDiff)
-        }
-        $("input[name = 'time_end']").change(calculateTime);
+        $("input[type='radio']:first").prop("checked", true);
+
+        $("input[name='meeting_date']").on("change", function () {
+            var id = $("input[type='radio']:checked").val();
+            var meeting_date = $(this).val();
+            const date = new Date(meeting_date);
+            const today = new Date();
+            date.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            console.log(date + "bc" + today)
+            if (date >= today) {
+                console.log("good")
+                $("#meeting_msg").html("")
+                          $.ajax({
+                type: "POST",
+                url: "@Url.Action("check", "User")",
+                data: { date: meeting_date ,id :id },
+                success: function (result) {
+
+
+                    if (!result.success) {
+                        $("input[name='meeting_date']").val("")
+                        let p = $("#meeting_msg").html("Cannot Book Meeting For this Date")
+                        p.addClass("text-danger")
+                    }
+                    else {
+                        $("#meeting_msg").html("")
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+                });
+
+            }
+            else {
+                console.log("not good")
+
+                $("input[name='meeting_date']").val("")
+                let p = $("#meeting_msg").html("Cannot Book Meeting For Past Date")
+                p.addClass("text-danger")
+
+            }
+
+        })
+
+
+        $("input[name='time_start']").on("change", function () {
+            var date = $("input[name='meeting_date']").val()
+            var time = $(this).val();
+            const dateTimeString = date + 'T' + time;
+            const dateTime = new Date(dateTimeString);
+            const now = new Date();
+
+
+
+
+            var id = $("input[type='radio']:checked").val();
+
+            console.log(time)
+            if (dateTime < now) {
+                $("input[name='time_start']").val("");
+
+                let p = $("#ts_msg").html("Cannot Book Meeting For this Time")
+                p.addClass("text-danger")
+                console.log('The selected date and time is in the past.');
+            } else {
+                  $.ajax({
+                type: "POST",
+                url: "@Url.Action("checktime", "User")",
+                data: { date: date ,id :id,time :time },
+                success: function (result) {
+
+
+                    if (!result.success) {
+                        $("input[name='time_start']").val("");
+
+                        let p = $("#ts_msg").html("Cannot Book Meeting For this Time")
+                        p.addClass("text-danger")
+                    }
+                    else {
+                        $("#ts_msg").html("passs")
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+                });
+                console.log('The selected date and time is in the future.');
+            }
+
+        })
+
+        $("input[name='time_end']").on("change", function () {
+            var date = $("input[name='meeting_date']").val()
+            var timestrat=$("input[name='time_start']").val();
+            var timeEnd = $(this).val();
+            const dateTimeStringEnd = date + 'T' + timeEnd;
+            const dateTimeEnd = new Date(dateTimeStringEnd);
+            var dateTimeStringStart = date + 'T' + timestrat;
+            const dateTimeStart = new Date(dateTimeStringStart);
+            var id = $("input[type='radio']:checked").val();
+
+            if (dateTimeEnd > dateTimeStart) {
+                console.log("good")
+                            $.ajax({
+                type: "POST",
+                url: "@Url.Action("checktime", "User")",
+                data: { date: date ,id :id,time :timeEnd },
+                success: function (result) {
+
+
+                    if (!result.success) {
+                        $("input[name='time_end']").val("");
+
+                        let p = $("#te_msg").html("Cannot Book Meeting For this Date")
+                        p.addClass("text-danger")
+                    }
+                    else {
+                        const timeDiffInMs = dateTimeEnd.getTime() - dateTimeStart.getTime();
+                        const timeDiffInMinutes = timeDiffInMs / (1000 * 60);
+                        const timeDiffInHours = Math.floor(timeDiffInMinutes / 60);
+                        const timeDiffInMinutesRemainder = Math.floor(timeDiffInMinutes % 60);
+                        console.log(timeDiffInHours + ":" + timeDiffInMinutesRemainder)
+                        $("input[name='duration']").val(timeDiffInHours + " Hours and "+timeDiffInMinutesRemainder+" Minutes")
+                        $("#te_msg").html("passs")
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+                });
+
+            }
+            else {
+                $("input[name='time_end']").val("");
+
+                let p = $("#te_msg").html("Cannot Book Meeting For this Time")
+                p.addClass("text-danger")
+                console.log("not good")
+            }
+
+            var id = $("input[type='radio']:checked").val();
+
+
+          //  console.log(time)
+
+        })
+
+
+        /*
+
+                const form = document.querySelector("#form");
+                const fields = form.querySelectorAll("input");
+
+                for (let i = 0; i < fields.length - 1; i++) {
+                    if (fields[i].type !== "radio") {
+                        fields[i].addEventListener("input", function () {
+                            let nextEnabled = true;
+                            for (let j = 0; j <= i; j++) {
+                                if (fields[j].type !== "radio" && fields[j].value.trim() === "") {
+                                    nextEnabled = false;
+                                    break;
+                                }
+                            }
+                            fields[i + 1].disabled = !nextEnabled;
+                        });
+                    }
+                }
+
+                fields[0].disabled = false;
+                for (let i = 1; i < fields.length; i++) {
+                    fields[i].disabled = true;
+                }
+        */
+
+
+
+
         //calculateTime();
     });
 </script>

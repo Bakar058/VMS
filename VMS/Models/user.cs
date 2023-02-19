@@ -11,55 +11,30 @@ namespace VMS.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     
     public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public user()
         {
-            this.AdminUserMeetingRelations = new HashSet<AdminUserMeetingRelation>();
+            this.Meetings = new HashSet<Meeting>();
         }
-
+    
         public int Id { get; set; }
-        [Required]
         public string First_Name { get; set; }
-        [Required]
-
         public string Last_Name { get; set; }
-        [Required]
-
-        [RegularExpression("[a-z0-9]+@[a-z]+\\.[a-z]{2,3}")]
-
         public string email { get; set; }
-        [Required]
-
         public string phone { get; set; }
-        [Required]
-
         public string CNIC { get; set; }
-        [Required]
-
         public string gender { get; set; }
-
-
         public string profile_pic { get; set; }
-
-
         public string cnic_pic { get; set; }
-        [Required]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$")]
-
-
         public string password { get; set; }
-        [Required]
-
-        [Compare("password", ErrorMessage = "should be same")]
-        public string confirm_password { get; set; }
         public int status { get; set; }
         public string otp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdminUserMeetingRelation> AdminUserMeetingRelations { get; set; }
+        public virtual ICollection<Meeting> Meetings { get; set; }
+        public virtual visit visit { get; set; }
     }
 }

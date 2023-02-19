@@ -3,7 +3,7 @@
     ViewBag.Title = "UserProfile";
 }
 
-<h2>UserProfile</h2>
+
 
 @{
     if (TempData["l_msg"] != null)
@@ -11,20 +11,47 @@
 
 
         <script>
-                                Swal.fire({
-                                    position: 'center-center',
-                                    icon: 'success',
-                                    title:'Login Successfull',
-                                    showConfirmButton: false,
-                                    timer: 5500,
-                                    customClass: {
-                                        confirmButton: 'btn btn-primary'
-                                    },
-                                    buttonsStyling: false
-                                });
+            Swal.fire({
+                position: 'center-center',
+                icon: 'success',
+                title: 'Login Successfull',
+                showConfirmButton: true,
+                timer: 1000,
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
         </script>
 
     }
 }
+@{
+    if (TempData["meeting_added"] != null)
+    {
 
-<h1>Welcome @Session["username"]</h1>
+
+    <script>
+            Swal.fire({
+                position: 'center-center',
+                icon: '@TempData["meeting_added"].ToString()',
+                title: '@TempData["meeting_msg"].ToString()',
+                showConfirmButton: true,
+                timer: 1000,
+                customClass: {
+                    confirmButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+    </script>
+
+    }
+}
+
+
+<section class="pt-70">
+    <div class="container">
+        <h1>Welcome @Session["username"]</h1>
+        <a class="btn btn-danger" href="@Url.Action("AddMeeting")">Add Meeting</a>
+</div>
+</section>

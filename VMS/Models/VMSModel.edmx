@@ -23,15 +23,6 @@
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="otp" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="AdminUserMeetingRelation">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="meeting_id" Type="int" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="admin_id" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Meeting">
           <Key>
             <PropertyRef Name="id" />
@@ -45,6 +36,8 @@
           <Property Name="duration" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="approval" Type="int" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="qrcode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Purpose" Type="varchar" MaxLength="5000" Nullable="false" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -63,58 +56,73 @@
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="otp" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK_AdminUserMeetingRelation_admins">
+        <EntityType Name="visits">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="visit_date" Type="datetime" Nullable="false" />
+          <Property Name="time_start" Type="time" Precision="7" Nullable="false" />
+          <Property Name="time_end" Type="time" Precision="7" Nullable="false" />
+          <Property Name="duration" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="approval" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="qrcode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="purpose" Type="varchar" MaxLength="5000" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Meeting_admins">
           <End Role="admins" Type="Self.admins" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <End Role="Meeting" Type="Self.Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="admins">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
+            <Dependent Role="Meeting">
               <PropertyRef Name="admin_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AdminUserMeetingRelation_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
-              <PropertyRef Name="meeting_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdminUserMeetingRelation_users">
+        <Association Name="FK_Meeting_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+          <End Role="Meeting" Type="Self.Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
+            <Dependent Role="Meeting">
               <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="VMSModelStoreContainer">
           <EntitySet Name="admins" EntityType="Self.admins" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AdminUserMeetingRelation" EntityType="Self.AdminUserMeetingRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meeting" EntityType="Self.Meeting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_AdminUserMeetingRelation_admins" Association="Self.FK_AdminUserMeetingRelation_admins">
+          <EntitySet Name="visits" EntityType="Self.visits" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Meeting_admins" Association="Self.FK_Meeting_admins">
             <End Role="admins" EntitySet="admins" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdminUserMeetingRelation_Meeting" Association="Self.FK_AdminUserMeetingRelation_Meeting">
             <End Role="Meeting" EntitySet="Meeting" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
           </AssociationSet>
-          <AssociationSet Name="FK_AdminUserMeetingRelation_users" Association="Self.FK_AdminUserMeetingRelation_users">
+          <AssociationSet Name="FK_Meeting_users" Association="Self.FK_Meeting_users">
             <End Role="users" EntitySet="users" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelation" />
+            <End Role="Meeting" EntitySet="Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_users" Association="Self.FK_visits_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="visits" EntitySet="visits" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -135,22 +143,10 @@
           <Property Name="gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="profile_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="cnic_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_admins" FromRole="admins" ToRole="AdminUserMeetingRelation" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="otp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="AdminUserMeetingRelation">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="meeting_id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="admin_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="admin" Relationship="Self.FK_AdminUserMeetingRelation_admins" FromRole="AdminUserMeetingRelation" ToRole="admins" />
-          <NavigationProperty Name="Meeting" Relationship="Self.FK_AdminUserMeetingRelation_Meeting" FromRole="AdminUserMeetingRelation" ToRole="Meeting" />
-          <NavigationProperty Name="user" Relationship="Self.FK_AdminUserMeetingRelation_users" FromRole="AdminUserMeetingRelation" ToRole="users" />
+          <NavigationProperty Name="Meetings" Relationship="VMSModel.FK_Meeting_admins" FromRole="admin" ToRole="Meeting" />
         </EntityType>
         <EntityType Name="Meeting">
           <Key>
@@ -165,7 +161,10 @@
           <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="approval" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_Meeting" FromRole="Meeting" ToRole="AdminUserMeetingRelation" />
+          <Property Name="qrcode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="admin" Relationship="VMSModel.FK_Meeting_admins" FromRole="Meeting" ToRole="admin" />
+          <NavigationProperty Name="user" Relationship="VMSModel.FK_Meeting_users" FromRole="Meeting" ToRole="user" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -180,65 +179,82 @@
           <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="profile_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="cnic_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AdminUserMeetingRelations" Relationship="Self.FK_AdminUserMeetingRelation_users" FromRole="users" ToRole="AdminUserMeetingRelation" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="otp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Meetings" Relationship="VMSModel.FK_Meeting_users" FromRole="user" ToRole="Meeting" />
+          <NavigationProperty Name="visit" Relationship="VMSModel.FK_visits_users" FromRole="user" ToRole="visit" />
         </EntityType>
-        <Association Name="FK_AdminUserMeetingRelation_admins">
-          <End Role="admins" Type="Self.admin" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+        <EntityContainer Name="VMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admins" EntityType="Self.admin" />
+          <EntitySet Name="Meetings" EntityType="Self.Meeting" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_Meeting_admins" Association="VMSModel.FK_Meeting_admins">
+            <End Role="admin" EntitySet="admins" />
+            <End Role="Meeting" EntitySet="Meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_users" Association="VMSModel.FK_Meeting_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="Meeting" EntitySet="Meetings" />
+          </AssociationSet>
+          <EntitySet Name="visits" EntityType="VMSModel.visit" />
+          <AssociationSet Name="FK_visits_users" Association="VMSModel.FK_visits_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="visit" EntitySet="visits" />
+          </AssociationSet>
+          </EntityContainer>
+        <Association Name="FK_Meeting_admins">
+          <End Type="VMSModel.admin" Role="admin" Multiplicity="1" />
+          <End Type="VMSModel.Meeting" Role="Meeting" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="admins">
+            <Principal Role="admin">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
+            <Dependent Role="Meeting">
               <PropertyRef Name="admin_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AdminUserMeetingRelation_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
+        <Association Name="FK_Meeting_users">
+          <End Type="VMSModel.user" Role="user" Multiplicity="1" />
+          <End Type="VMSModel.Meeting" Role="Meeting" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Meeting">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
-              <PropertyRef Name="meeting_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdminUserMeetingRelation_users">
-          <End Role="users" Type="Self.user" Multiplicity="1" />
-          <End Role="AdminUserMeetingRelation" Type="Self.AdminUserMeetingRelation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
+            <Principal Role="user">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AdminUserMeetingRelation">
+            <Dependent Role="Meeting">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="VMSEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="admins" EntityType="Self.admin" />
-          <EntitySet Name="AdminUserMeetingRelations" EntityType="Self.AdminUserMeetingRelation" />
-          <EntitySet Name="Meetings" EntityType="Self.Meeting" />
-          <EntitySet Name="users" EntityType="Self.user" />
-          <AssociationSet Name="FK_AdminUserMeetingRelation_admins" Association="Self.FK_AdminUserMeetingRelation_admins">
-            <End Role="admins" EntitySet="admins" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdminUserMeetingRelation_Meeting" Association="Self.FK_AdminUserMeetingRelation_Meeting">
-            <End Role="Meeting" EntitySet="Meetings" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdminUserMeetingRelation_users" Association="Self.FK_AdminUserMeetingRelation_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="AdminUserMeetingRelation" EntitySet="AdminUserMeetingRelations" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="visit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="visit_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="time_start" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="time_end" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="duration" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approval" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="qrcode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="purpose" Type="String" Nullable="false" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="VMSModel.FK_visits_users" FromRole="visit" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_visits_users">
+          <End Type="VMSModel.user" Role="user" Multiplicity="1" />
+          <End Type="VMSModel.visit" Role="visit" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="visit">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -264,19 +280,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AdminUserMeetingRelations">
-            <EntityTypeMapping TypeName="VMSModel.AdminUserMeetingRelation">
-              <MappingFragment StoreEntitySet="AdminUserMeetingRelation">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="meeting_id" ColumnName="meeting_id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Meetings">
             <EntityTypeMapping TypeName="VMSModel.Meeting">
               <MappingFragment StoreEntitySet="Meeting">
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="qrcode" ColumnName="qrcode" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="admin_id" ColumnName="admin_id" />
@@ -304,6 +312,22 @@
                 <ScalarProperty Name="gender" ColumnName="gender" />
                 <ScalarProperty Name="profile_pic" ColumnName="profile_pic" />
                 <ScalarProperty Name="cnic_pic" ColumnName="cnic_pic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visits">
+            <EntityTypeMapping TypeName="VMSModel.visit">
+              <MappingFragment StoreEntitySet="visits">
+                <ScalarProperty Name="purpose" ColumnName="purpose" />
+                <ScalarProperty Name="qrcode" ColumnName="qrcode" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="approval" ColumnName="approval" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="time_end" ColumnName="time_end" />
+                <ScalarProperty Name="time_start" ColumnName="time_start" />
+                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

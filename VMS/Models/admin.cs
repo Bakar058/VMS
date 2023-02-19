@@ -17,7 +17,7 @@ namespace VMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public admin()
         {
-            this.AdminUserMeetingRelations = new HashSet<AdminUserMeetingRelation>();
+            this.Meetings = new HashSet<Meeting>();
         }
     
         public int id { get; set; }
@@ -31,12 +31,10 @@ namespace VMS.Models
         public string profile_pic { get; set; }
         public string cnic_pic { get; set; }
         public string password { get; set; }
-        public string confirm_password { get; set; }
-
         public int status { get; set; }
         public string otp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdminUserMeetingRelation> AdminUserMeetingRelations { get; set; }
+        public virtual ICollection<Meeting> Meetings { get; set; }
     }
 }
