@@ -31,7 +31,7 @@
     {
 
 
-    <script>
+        <script>
             Swal.fire({
                 position: 'center-center',
                 icon: '@TempData["meeting_added"].ToString()',
@@ -43,15 +43,36 @@
                 },
                 buttonsStyling: false
             });
-    </script>
+        </script>
 
     }
 }
+@{
+    if (TempData["visit_added"] != null)
+    {
 
+
+        <script>
+            Swal.fire({
+                position: 'center-center',
+                icon: '@TempData["visit_added"].ToString()',
+                title: '@TempData["visit_msg"].ToString()',
+                showConfirmButton: true,
+                timer: 1000,
+                customClass: {
+                    confirmButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+        </script>
+
+    }
+}
 
 <section class="pt-70">
     <div class="container">
         <h1>Welcome @Session["username"]</h1>
         <a class="btn btn-danger" href="@Url.Action("AddMeeting")">Add Meeting</a>
-</div>
+        <a class="btn btn-primary" href="@Url.Action("AddVisit")">Add Visit</a>
+    </div>
 </section>

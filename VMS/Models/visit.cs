@@ -18,13 +18,11 @@ namespace VMS.Models
         public int user_id { get; set; }
         public System.DateTime visit_date { get; set; }
         public System.TimeSpan time_start { get; set; }
-        public System.TimeSpan time_end { get; set; }
-        public string duration { get; set; }
         public int approval { get; set; }
         public int status { get; set; }
         public string qrcode { get; set; }
         public string purpose { get; set; }
     
-        public virtual user user { get; set; }
+        public virtual user user1 { get; set; }
     }
 }

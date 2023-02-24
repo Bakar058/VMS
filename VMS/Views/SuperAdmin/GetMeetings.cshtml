@@ -1,21 +1,26 @@
 ﻿@model IEnumerable<VMS.Models.Meeting>
 @{
     ViewBag.Title = "GetMeetings";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
 }
 
-<section  class="pt-70">
+<section class="pt-70">
     <div class="container">
 
-        <h2>All Meetings</h2>
+
+        <h2>GetMeetings</h2>
+
+
+        <div class="col-sm-12">
             <div class="card">
-                
+
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table" >
+                        <table class=" table ">
                             <thead>
                                 <tr>
                                     <th>Meeting Id</th>
-                                   
+                                    <th>User ID</th>
                                     <th>Admin ID</th>
                                     <th>Date</th>
                                     <th>Meeting Status</th>
@@ -29,33 +34,36 @@
                                             <td>
                                                 @meeting.id
                                             </td>
-                                            
+                                            <td>
+                                                @meeting.user_id
+                                            </td>
                                             <td>
                                                 @meeting.admin_id
 
                                             </td>
                                             <td>
-                                                @meeting.meeting_date.ToShortDateString()
+                                                @meeting.meeting_date.ToLongDateString()
                                             </td>
                                             @{
                                                 if (meeting.approval == 0)
                                                 {
-                                                    <td class="bg-warning">
+                                                    <td>
                                                         Pendimg Approval
                                                     </td>
+                                                                                        
                                                 }
                                                 else if (meeting.approval == 1)
                                                 {
-                                                    <td class="bg-success"> Approved</td>
+                                                    <td> Meeting is Approved</td>
                                                 }
                                                 else
                                                 {
-                                                    <td class="bg-danger"> Declined</td>
 
+                                                    <td>Meeting Declined</td>
                                                 }
                                             }
                                             <td>
-                                                <a href="@Url.Action("MeetingDetail","User",new {id= meeting.id})">Details</a>
+                                                @* <a href="@Url.Action("MeetingDetail","User",new {id= meeting.id})">Details</a>*@
                                             </td>
 
                                         </tr>
@@ -63,12 +71,20 @@
                                     }
                                 }
                             </tbody>
-                          
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User Name</th>
+                                    <th>Role</th>
+                                    <th>Active</th>
+                                    <th>Account Status</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
-   
+    </div>
 </section>
+

@@ -100,40 +100,28 @@
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                 <ul class="navbar-nav m-auto">
                                     <li class="nav-item">
-                                        <a class="active" href="@Url.Action("UserProfile")">Home</a>
+                                        <a class="active" href="@Url.Action("AdminProfile")">Home</a>
 
                                     </li>
 
 
-                                    @{
-                                        if (Session["user"] != null)
-                                        {
-                                            var a = (VMS.Models.user)Session["user"];
-                                            <li class="nav-item"><a href="@Url.Action("GetMeetings", "User", new { id = a.Id })">Meetings</a></li>
-                                            <li class="nav-item"><a href="@Url.Action("GetVisits", "User", new { id = a.Id })">Visits</a></li>
+                                   
+                                           
+                                            <li class="nav-item"><a href="@Url.Action("GetMeetings", "SuperAdmin")">Meetings</a></li>
 
+
+                                        
+
+
+                                    @{
+                                        if (Session["SuperAdminusername"] != null)
+                                        {
+                                            <li class="nav-item"><a href="@Url.Action("Logout", "SuperAdmin")">Log Out</a></li>
 
                                         }
                                         else
                                         {
-                                            <li class="nav-item"><a href="@Url.Action("GetMeetings", "User", new { id = 0 })">Meetings</a></li>
-                                            <li class="nav-item"><a href="@Url.Action("GetVisits", "User", new { id = 0 })">Visits</a></li>
-
-                                        }
-                                    }
-                                    <li class="nav-item"><a href="@Url.Action("AddMeeting", "User")">Add Meeting</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("AddVisit", "User")">Add Visit</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("ChangePassword", "User")">Change Password</a></li>
-
-                                    @{
-                                        if (Session["username"] != null)
-                                        {
-                                            <li class="nav-item"><a href="@Url.Action("Logout", "User")">Log Out</a></li>
-
-                                        }
-                                        else
-                                        {
-                                            <li class="nav-item"><a href="@Url.Action("Login", "User")">Log in</a></li>
+                                            <li class="nav-item"><a href="@Url.Action("Login", "SuperAdmin")">Log in</a></li>
 
                                         }
                                     }
@@ -145,18 +133,13 @@
 
 
                                 @{
-                                    if (Session["username"] != null)
+                                    if (Session["SuperAdminusername"] != null)
                                     {
-                                        <span class="mx-5">@Session["username"].ToString()</span>
-                                        <img height="50" width="50" style="margin-top:-10px" src="@Url.Content(Session["img"].ToString())" alt="">
+                                        <span class="mx-5">Administrator</span>
 
 
                                     }
-                                    else
-                                    {
-                                        <img class="b-r-10" src="~/assets/images/dashboard/profile.jpg" alt="">
-
-                                    }
+                                   
                                 }
                             </div> <!-- cart search -->
                         </nav>  <!-- nav -->
@@ -172,12 +155,12 @@
 
     <!--====== jquery js ======-->
     <script src="~/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="~/js/bootstrap.min.js" ></script>
-    <script src="~/js/vendor//jquery-1.12.4.min.js" ></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/vendor//jquery-1.12.4.min.js"></script>
 
     <!--====== Bootstrap js ======-->
     <script src="~/js/popper.min.js"></script>
-  
+
 
     <!--====== Owl Carousel js ======-->
     <script src="~/js/owl.carousel.min.js"></script>
@@ -189,7 +172,7 @@
     <script src="~/js/slick.min.js"></script>
 
     <!--====== Nice Number js ======-->
-   @* <script src="~/js/jquery.nice-number.min.js"></script>*@
+    @* <script src="~/js/jquery.nice-number.min.js"></script>*@
 
     <!--====== Nice Select js ======-->
     <script src="~/js/jquery.nice-select.min.js"></script>

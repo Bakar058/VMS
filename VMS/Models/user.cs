@@ -18,6 +18,7 @@ namespace VMS.Models
         public user()
         {
             this.Meetings = new HashSet<Meeting>();
+            this.visits = new HashSet<visit>();
         }
     
         public int Id { get; set; }
@@ -30,11 +31,14 @@ namespace VMS.Models
         public string profile_pic { get; set; }
         public string cnic_pic { get; set; }
         public string password { get; set; }
+        public string confirm_password { get; set; }
+
         public int status { get; set; }
         public string otp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Meeting> Meetings { get; set; }
-        public virtual visit visit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<visit> visits { get; set; }
     }
 }

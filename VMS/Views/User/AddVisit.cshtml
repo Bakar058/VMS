@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewBag.Title = "AddVisit";
+}
+@{
+    if (TempData["visit_added"] != null)
+    {
+
+
+        <script>
+            Swal.fire({
+                position: 'center-center',
+                icon: '@TempData["visit_added"].ToString()',
+                title: '@TempData["visit_msg"].ToString()',
+                showConfirmButton: true,
+                timer: 1000,
+                customClass: {
+                    confirmButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+        </script>
+
+    }
+}
+<section class="pt-70 ">
+    <div class="container ">
+
+
+        <div id="login-part" class="pt-85 pb-80">
+            <div class="container">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-md-8">
+                        <div class="login-form text-center">
+
+                            <h2>AddVisit</h2>
+
+                            <form method="post" id="form" action="@Url.Action("AddVisit")">
+                                <div class="col-md-7 mb-3">
+                                    @{
+                                        var a = (VMS.Models.user)Session["user"];
+                                    }
+                                    <input type="number" class="form-control" value="@a.Id" name="user_id" hidden />
+
+
+
+                                </div>
+
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label ">Date</label>
+                                    <input class="form-control dis" id="validationDefault01" type="date" name="visit_date" placeholder="">
+                                    <p id="meeting_msg">@Html.ValidationMessage("email")</p>
+                                </div>
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Visit Start Time</label>
+                                    <input class="form-control dis" type="time" name="time_start" disabled>
+                                    <p id="ts_msg">@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+
+
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Purpose</label>
+                                    <textarea class="form-control dis" placeholder="Enter Your Purpose Of Meeting" name="purpose" disabled></textarea>
+
+                                    <p>@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+
+
+                                <div class="col-md-11 mb-3 d-flex justify-content-center">
+                                    <input type="submit" class="btn btn-outline-primary  " id="submit" value="Submit" disabled>
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    let submit= true;
+
+    function check() {
+        let inp = document.querySelectorAll(".dis");
+       // console.log(inp)
+        for (let i = 0; i < inp.length; i++) {
+            if (inp[i].value == "") {
+                submit = false;
+                break;
+            }
+            else {
+                submit = true;
+            }
+        }
+
+        if (submit) {
+            $("#submit").removeAttr("disabled");
+        }
+    }
+
+    $(document).ready(function () {
+
+        $(".dis").on("input", function () {
+            var next = $(this).parent().next().children(".dis");
+          //  console.log(next);
+            if ($(this).val() == "") {
+                $(next).attr("disabled", "disabled");
+            }
+            else {
+                $(next).removeAttr("disabled");
+            }
+            check()
+
+        })
+
+
+
+
+
+
+        $("input[name='visit_date']").on("change", function () {
+            var id = $("input[type='radio']:checked").val();
+            var meeting_date = $(this).val();
+            const date = new Date(meeting_date);
+            const today = new Date();
+            date.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            console.log(date + "bc" + today)
+            if (date >= today) {
+                console.log("good")
+                $("#meeting_msg").html("")
+                          $.ajax({
+                type: "POST",
+                url: "@Url.Action("check", "User")",
+                data: { date: meeting_date ,id :id },
+                success: function (result) {
+
+
+                    if (!result.success) {
+                        $("input[name='visit_date']").val("")
+                        let p = $("#meeting_msg").html("Cannot Book Meeting For this Date")
+                        p.addClass("text-danger")
+                    }
+                    else {
+                        $("#meeting_msg").html("")
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+                });
+
+            }
+            else {
+                console.log("not good")
+
+                $("input[name='visit_date']").val("")
+                let p = $("#meeting_msg").html("Cannot Book Meeting For Past Date")
+                p.addClass("text-danger")
+
+            }
+
+        })
+
+
+        $("input[name='time_start']").on("change", function () {
+            var date = $("input[name='visit_date']").val()
+            var time = $(this).val();
+            const dateTimeString = date + 'T' + time;
+            const dateTime = new Date(dateTimeString);
+            const now = new Date();
+
+
+
+
+         //   var id = $("input[type='radio']:checked").val();
+
+            console.log(dateTime.getHours())
+            if (dateTime < now) {
+                $("input[name='time_start']").val("");
+
+                let p = $("#ts_msg").html("Cannot Book Meeting For this Time")
+                p.addClass("text-danger")
+                console.log('The selected date and time is in the past.');
+            } else {
+                if (dateTime.getHours() >= 10 && dateTime.getHours() < 18) {
+                    $("#ts_msg").html("Pass")
+                    console.log('The selected date and time is in the future.');
+                }
+                else {
+                    $("input[name='time_start']").val("");
+
+                    let p = $("#ts_msg").html("Cannot Book Meeting For this Time")
+                    p.addClass("text-danger")
+                }
+
+            }
+
+        })
+
+
+
+
+
+
+
+        //calculateTime();
+    });
+</script>

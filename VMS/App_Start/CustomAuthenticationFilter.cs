@@ -58,4 +58,33 @@ namespace VMS.App_Start
             }
         }
     }
+
+
+
+
+    public class SuperAdminAuthorize : AuthorizeAttribute
+    {
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            // Check if the user has a valid authentication cookie
+            HttpCookie cookie = httpContext.Request.Cookies["SuperAdminCookie"];
+            return cookie != null && cookie.Value == "LoggedIn";
+        }
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
+            {
+                { "controller", "SuperAdmin" },
+                { "action", "Login" }
+            });
+            }
+            else
+            {
+                filterContext.Result = new HttpUnauthorizedResult();
+            }
+        }
+    }
+
 }

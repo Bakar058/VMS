@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -137,6 +137,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\GuardController.cs" />
+    <Compile Include="Controllers\SuperAdminController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -149,6 +151,9 @@
       <DependentUpon>VMSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\user.cs">
+      <DependentUpon>VMSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\visit.cs">
       <DependentUpon>VMSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VMSModel.Context.cs">
@@ -184,6 +189,8 @@
     <Content Include="css\responsive.css" />
     <Content Include="css\slick.css" />
     <Content Include="css\style.css" />
+    <Content Include="dist\llqrcode.js" />
+    <Content Include="dist\webqrcode.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -328,6 +335,15 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\ChangePassword.cshtml" />
+    <Content Include="Views\User\AddVisit.cshtml" />
+    <Content Include="Views\User\GetVisits.cshtml" />
+    <Content Include="Views\User\VisitDetail.cshtml" />
+    <Content Include="Views\Shared\_SuperAdminLayout.cshtml" />
+    <Content Include="Views\SuperAdmin\GetMeetings.cshtml" />
+    <Content Include="Views\SuperAdmin\Login.cshtml" />
+    <Content Include="Views\SuperAdmin\SuperAdminProfile.cshtml" />
+    <Content Include="Views\SuperAdmin\GetVisits.cshtml" />
+    <Content Include="Views\Guard\Scanner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="adminimages\" />
@@ -335,6 +351,7 @@
     <Folder Include="App_Start\Filters\" />
     <Folder Include="Meetingimages\" />
     <Folder Include="userimage\" />
+    <Folder Include="visitimages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

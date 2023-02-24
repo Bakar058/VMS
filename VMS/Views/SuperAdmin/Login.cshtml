@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+}
+
+<section class="pt-30">
+    <div class="container">
+
+
+        <div id="login-part" class="pt-85 pb-80">
+            <div class="container">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-xl-4 col-lg-5 col-md-7 col-sm-10">
+                        <div class="login-form text-center">
+                            <div class="logo mb-50">
+                                <a href="#"><img src="images/logo-footer.png" alt="Logo"></a>
+                                <h2>Login</h2>
+                            </div>
+                            <form method="post" action="@Url.Action("Login")">
+
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">UserName</label>
+                                    <input class="form-control" id="validationDefault01" type="text" name="username" placeholder="">
+                                    <p class="text-danger">@Html.ValidationMessage("email")</p>
+                                </div>
+                                <div class="col-md-11 mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input class="form-control" type="text" name="password">
+                                    <p class="text-danger">@Html.ValidationMessage("password")</p>
+
+
+                                </div>
+
+                                <div class="singel-form pt-30">
+                                    <button type="submit">Login</button>
+
+                                </div>
+                                <div class="singel-form pt-25">
+                                    <ul class="remember">
+                                        <li>
+                                            <input type="checkbox" name="checkbox" id="checkbox">
+                                            <label for="checkbox"><span></span>Remember Me</label>
+                                        </li>
+                                        <li>
+                                            <p>Forgot <a href="#">password?</a></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+
+

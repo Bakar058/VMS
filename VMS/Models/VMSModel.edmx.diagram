@@ -11,7 +11,7 @@
         <AssociationConnector Association="VMSModel.FK_Meeting_admins" />
         <AssociationConnector Association="VMSModel.FK_Meeting_users" />
         <EntityTypeShape EntityType="VMSModel.visit" Width="1.5" PointX="8.125" PointY="9.875" />
-        <AssociationConnector Association="VMSModel.FK_visits_users" />
+        <AssociationConnector Association="VMSModel.FK_visits_users1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,81 @@
+﻿@model VMS.Models.visit
+@{
+    ViewBag.Title = "VisitDetail";
+}
+
+
+
+<section class="mt-85">
+    <div class="container">
+
+
+        <h2>Visit Detail</h2>
+
+        <div class="row  p-0">
+            <div class="col-xl-4 xl-cs-65 box-col-12">
+                <div class="card ">
+                
+
+                    <div style="height:400px" class="card-body text-center my-auto">
+                        <h3>Visit QRCode.</h3>
+                        <hr />
+                        @{
+                            if (Model.approval == 0)
+                            {
+                                <p>
+                                    QR Code Will be Available After The Approval.....
+                                </p>
+                            }
+                            else if (Model.approval == 1)
+                            {
+                                if (Model.status >= 0)
+                                {
+                                    <div><img src="@Url.Content(Model.qrcode)" alt=""></div>
+
+                                }
+                                else if (Model.status == -1)
+                                {
+                                    <p>Visit  Ended</p>
+                                }
+
+                            }
+                            else
+                            {
+                                <p>Visit Declined</p>
+                            }
+                        }
+
+                        <hr />
+
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-md-6 ">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h3>Visit Purpose.</h3>
+
+
+                        <hr>
+                        <p>@Model.purpose</p>
+                        <hr>
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+

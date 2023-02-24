@@ -432,5 +432,69 @@ namespace VMS.Controllers
             }
             return View();
         }
+        public ActionResult AddVisit()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddVisit([Bind(Include = "Id,user_id,visit_date,time_start,purpose")] visit visit)
+        {
+            visit.qrcode = GenerateQRCodevisit(visit, 400, 400);
+            visit.status = 0;
+            visit.approval = 0;
+
+            db.visits.Add(visit);
+            var a = db.SaveChanges();
+            if (a > 0)
+            {
+                TempData["visit_added"] = "success";
+                TempData["visit_msg"] = "Visit Is Added Succesfully. Wait For The Approvel";
+                return RedirectToAction("UserProfile");
+            }
+            else
+            {
+                TempData["visit_added"] = "error";
+                TempData["visit_msg"] = "Visit Is Not Added. Something Went Wrong";
+                return View();
+            }
+
+        
+            
+        }
+        public string GenerateQRCodevisit(visit visit, int width, int height)
+        {
+            string data = visit.Id.ToString() + " \n" + visit.user_id.ToString()  + " \n" + visit.visit_date.ToLongDateString().ToString() +  " \n";
+
+            var barcodeWriter = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new EncodingOptions
+                {
+                    Width = width,
+                    Height = height
+                }
+            };
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            string str= new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
+            var bitmap = barcodeWriter.Write(data);
+            var fileName = "Visit" + visit.Id.ToString() +visit.visit_date.Day + "-" + visit.visit_date.Month + "-" + visit.visit_date.Year + visit.time_start.Hours + "-" + visit.time_start.Minutes +str+ ".png";
+            string path = "~/visitimages/" + fileName;
+            var filePath = Path.Combine(Server.MapPath("~/visitimages"), fileName);
+            bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+            return path;
+            // return File(filePath, "image/png");
+        }
+        public ActionResult GetVisits(int id)
+        {
+            var visit = db.visits.Where(model => model.user_id == id);
+            return View(visit);
+        }
+        public ActionResult VisitDetail(int id)
+        {
+            var visit = db.visits.Where(model => model.Id == id).FirstOrDefault();
+            return View(visit);
+        }
+        
     }
 }

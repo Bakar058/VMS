@@ -31,6 +31,8 @@ namespace VMS.Models
         public string profile_pic { get; set; }
         public string cnic_pic { get; set; }
         public string password { get; set; }
+        public string confirm_password { get; set; }
+
         public int status { get; set; }
         public string otp { get; set; }
     

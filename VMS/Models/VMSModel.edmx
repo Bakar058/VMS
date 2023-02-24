@@ -64,8 +64,6 @@
           <Property Name="user_id" Type="int" Nullable="false" />
           <Property Name="visit_date" Type="datetime" Nullable="false" />
           <Property Name="time_start" Type="time" Precision="7" Nullable="false" />
-          <Property Name="time_end" Type="time" Precision="7" Nullable="false" />
-          <Property Name="duration" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="approval" Type="int" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="qrcode" Type="varchar" MaxLength="500" Nullable="false" />
@@ -97,13 +95,13 @@
         </Association>
         <Association Name="FK_visits_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
-          <End Role="visits" Type="Self.visits" Multiplicity="0..1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="users">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="visits">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -183,7 +181,7 @@
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="otp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Meetings" Relationship="VMSModel.FK_Meeting_users" FromRole="user" ToRole="Meeting" />
-          <NavigationProperty Name="visit" Relationship="VMSModel.FK_visits_users" FromRole="user" ToRole="visit" />
+          <NavigationProperty Name="visits" Relationship="VMSModel.FK_visits_users1" FromRole="user" ToRole="visit" />
         </EntityType>
         <EntityContainer Name="VMSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admins" EntityType="Self.admin" />
@@ -198,7 +196,7 @@
             <End Role="Meeting" EntitySet="Meetings" />
           </AssociationSet>
           <EntitySet Name="visits" EntityType="VMSModel.visit" />
-          <AssociationSet Name="FK_visits_users" Association="VMSModel.FK_visits_users">
+          <AssociationSet Name="FK_visits_users1" Association="VMSModel.FK_visits_users1">
             <End Role="user" EntitySet="users" />
             <End Role="visit" EntitySet="visits" />
           </AssociationSet>
@@ -235,23 +233,21 @@
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="visit_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="time_start" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="time_end" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="duration" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="approval" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="qrcode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="purpose" Type="String" Nullable="false" MaxLength="5000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="user" Relationship="VMSModel.FK_visits_users" FromRole="visit" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="VMSModel.FK_visits_users1" FromRole="visit" ToRole="user" />
         </EntityType>
-        <Association Name="FK_visits_users">
+        <Association Name="FK_visits_users1">
           <End Type="VMSModel.user" Role="user" Multiplicity="1" />
-          <End Type="VMSModel.visit" Role="visit" Multiplicity="0..1" />
+          <End Type="VMSModel.visit" Role="visit" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="visit">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -322,8 +318,6 @@
                 <ScalarProperty Name="qrcode" ColumnName="qrcode" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="approval" ColumnName="approval" />
-                <ScalarProperty Name="duration" ColumnName="duration" />
-                <ScalarProperty Name="time_end" ColumnName="time_end" />
                 <ScalarProperty Name="time_start" ColumnName="time_start" />
                 <ScalarProperty Name="visit_date" ColumnName="visit_date" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
